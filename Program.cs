@@ -22,6 +22,8 @@ var builder = WebApplication.CreateBuilder(args);
     // configure DI for application services
     services.AddScoped<IJwtUtils, JwtUtils>();
     services.AddScoped<IUserService, UserService>();
+    services.AddScoped<IReceitasService, ReceitasService>();
+
 }
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -31,19 +33,19 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // add hardcoded test user to db on startup
-using (var scope = app.Services.CreateScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<DataContext>();
-    var testUser = new User
-    {
-        PrimeiroNome = "Test",
-        UltimoNome = "User",
-        Email = "test",
-        HashSenha = BCrypt.Net.BCrypt.HashPassword("test")
-    };
-    context.Users.Add(testUser);
-    context.SaveChanges();
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    var context = scope.ServiceProvider.GetRequiredService<DataContext>();
+//    var testUser = new User
+//    {
+//        PrimeiroNome = "Test",
+//        UltimoNome = "User",
+//        Email = "test",
+//        HashSenha = BCrypt.Net.BCrypt.HashPassword("test")
+//    };
+//    context.Users.Add(testUser);
+//    context.SaveChanges();
+//}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

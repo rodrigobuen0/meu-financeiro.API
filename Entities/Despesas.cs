@@ -12,12 +12,12 @@ namespace meu_financeiro.API.Entities
         public string? Descricao { get; set; }
         public decimal Valor { get; set; }
         public DateOnly DataTransacao { get; set; }
-        public Guid CategoridaId { get; set; }
-        public Categorias Categoria { get; set; }
+        public Guid CategoriaId { get; set; }
+        public Categorias? Categoria { get; set; }
         public Guid ContaId { get; set; }
-        public Contas Conta { get; set; }
+        public Contas? Conta { get; set; }
         public Guid UserId { get; set; }
-        public User User { get; set; }
+        public User? User { get; set; }
 
     }
 }

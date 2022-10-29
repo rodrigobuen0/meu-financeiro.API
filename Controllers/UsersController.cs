@@ -57,14 +57,14 @@ namespace meu_financeiro.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public IActionResult GetById(Guid id)
         {
             var user = _userService.GetById(id);
             return Ok(user);
         }
 
         [HttpGet("{id}/refresh-tokens")]
-        public IActionResult GetRefreshTokens(int id)
+        public IActionResult GetRefreshTokens(Guid id)
         {
             var user = _userService.GetById(id);
             return Ok(user.RefreshTokens);
@@ -78,7 +78,7 @@ namespace meu_financeiro.API.Controllers
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
-                Expires = DateTime.UtcNow.AddDays(7)
+                Expires = DateTime.UtcNow.AddMinutes(15)
             };
             Response.Cookies.Append("refreshToken", token, cookieOptions);
         }
