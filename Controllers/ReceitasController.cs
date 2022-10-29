@@ -13,47 +13,61 @@ namespace meu_financeiro.API.Controllers
     public class ReceitasController : ControllerBase
     {
         private IReceitasService _receitasService;
+        private IJwtUtils _jwtUtils;
 
-        public ReceitasController(IReceitasService receitasService)
+        public ReceitasController(IReceitasService receitasService, IJwtUtils jwtUtils)
         {
             _receitasService = receitasService;
+            _jwtUtils = jwtUtils;
         }
 
         // GET: api/<ReceitasController>
         [HttpGet]
         public IActionResult GetAll()
         {
-            var receitas = _receitasService.GetAll(Guid.Parse(Request.Headers["UserId"]));
-            return Ok(receitas);
+            var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            var userId = _jwtUtils.ValidateJwtToken(token);
+            if (userId == null)
+                return BadRequest("Usuario não encontrado!");
+            else
+            {
+                var receitas = _receitasService.GetAll((Guid)userId);
+                return Ok(receitas);
+            }
         }
 
         // GET api/<ReceitasController>/5
         [HttpGet("{id}")]
         public IActionResult GetById(Guid id)
         {
-            var receita = _receitasService.GetById(id);
+            var receita = _receitasService.GetById(id, Guid.Parse(Request.Headers["UserId"]));
             return Ok(receita);
         }
 
 
         // POST api/<ReceitasController>
         [HttpPost]
-        public IActionResult Post([FromBody] Receitas receita)
+        public async Task<IActionResult> Post([FromBody] Receitas receita)
         {
-            var response = _receitasService.Post(receita);
+            var response = await _receitasService.Post(receita, Guid.Parse(Request.Headers["UserId"]));
             return Ok(response);
         }
 
         // PUT api/<ReceitasController>/5
         [HttpPut("{id}")]
-        public void Put(Guid id, [FromBody] Receitas receita)
+        public async Task<IActionResult> Put(Guid id, [FromBody] Receitas receita)
         {
+            var response = await _receitasService.Put(id, receita, Guid.Parse(Request.Headers["UserId"]));
+            return Ok(response);
+
         }
 
         // DELETE api/<ReceitasController>/5
         [HttpDelete("{id}")]
-        public void Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
+            var response = await _receitasService.Delete(id, Guid.Parse(Request.Headers["UserId"]));
+            return Ok(response);
         }
     }
 }

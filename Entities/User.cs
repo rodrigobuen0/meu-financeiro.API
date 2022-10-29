@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
-using System.Net.Mail;
 
 namespace meu_financeiro.API.Entities
 {
@@ -40,9 +39,13 @@ namespace meu_financeiro.API.Entities
 
         [JsonIgnore]
         public List<RefreshToken> RefreshTokens { get; set; }
+        [JsonIgnore]
         public List<Contas> Contas{ get; set; }
+        [JsonIgnore]
         public List<Categorias> Categorias { get; set; }
+        [JsonIgnore]
         public List<Despesas> Despesas { get; set; }
+        [JsonIgnore]
         public List<Receitas> Receitas { get; set; }
 
     }
