@@ -94,11 +94,11 @@ namespace meu_financeiro.API.Migrations
                     CreatedByIp = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Revoked = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    RevokedByIp = table.Column<string>(type: "longtext", nullable: false)
+                    RevokedByIp = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ReplacedByToken = table.Column<string>(type: "longtext", nullable: false)
+                    ReplacedByToken = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ReasonRevoked = table.Column<string>(type: "longtext", nullable: false)
+                    ReasonRevoked = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     UserId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
                 },

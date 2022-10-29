@@ -156,18 +156,15 @@ namespace meu_financeiro.API.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("ReasonRevoked")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("ReplacedByToken")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime?>("Revoked")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("RevokedByIp")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Token")

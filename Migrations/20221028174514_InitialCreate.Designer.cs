@@ -130,9 +130,6 @@ namespace meu_financeiro.API.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<Guid>("IdConta")
-                        .HasColumnType("char(36)");
-
                     b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
 
