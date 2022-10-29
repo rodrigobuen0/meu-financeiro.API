@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace meu_financeiro.API.Entities
 {
@@ -11,6 +12,7 @@ namespace meu_financeiro.API.Entities
         [MaxLength(50)]
         public string Descricao { get; set; }
         public Guid UserId { get; set; }
+        [JsonIgnore]
         public User User { get; set; }
 
     }
