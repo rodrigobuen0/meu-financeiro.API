@@ -12,7 +12,7 @@ namespace meu_financeiro.API.Authorization
     public interface IJwtUtils
     {
         public string GenerateJwtToken(User user);
-        public int? ValidateJwtToken(string token);
+        public Guid? ValidateJwtToken(string token);
         public RefreshToken GenerateRefreshToken(string ipAddress);
     }
 
@@ -44,7 +44,7 @@ namespace meu_financeiro.API.Authorization
             return tokenHandler.WriteToken(token);
         }
 
-        public int? ValidateJwtToken(string token)
+        public Guid? ValidateJwtToken(string token)
         {
             if (token == null)
                 return null;
@@ -64,7 +64,7 @@ namespace meu_financeiro.API.Authorization
                 }, out SecurityToken validatedToken);
 
                 var jwtToken = (JwtSecurityToken)validatedToken;
-                var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
+                var userId = Guid.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
 
                 // return user id from JWT token if validation successful
                 return userId;

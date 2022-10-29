@@ -2,6 +2,7 @@
 using meu_financeiro.API.Entities;
 using meu_financeiro.API.Helpers;
 using meu_financeiro.API.Models.Users;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace meu_financeiro.API.Services
@@ -12,7 +13,7 @@ namespace meu_financeiro.API.Services
         AuthenticateResponse RefreshToken(string token, string ipAddress);
         void RevokeToken(string token, string ipAddress);
         IEnumerable<User> GetAll();
-        User GetById(int id);
+        User GetById(Guid id);
     }
 
     public class UserService : IUserService
@@ -42,6 +43,10 @@ namespace meu_financeiro.API.Services
             // authentication successful so generate jwt and refresh tokens
             var jwtToken = _jwtUtils.GenerateJwtToken(user);
             var refreshToken = _jwtUtils.GenerateRefreshToken(ipAddress);
+
+            if (user.RefreshTokens == null)
+                user.RefreshTokens = new List<RefreshToken>();
+
             user.RefreshTokens.Add(refreshToken);
 
             // remove old refresh tokens from user
@@ -106,7 +111,7 @@ namespace meu_financeiro.API.Services
             return _context.Users;
         }
 
-        public User GetById(int id)
+        public User GetById(Guid id)
         {
             var user = _context.Users.Find(id);
             if (user == null) throw new KeyNotFoundException("User not found");
@@ -117,8 +122,7 @@ namespace meu_financeiro.API.Services
 
         private User getUserByRefreshToken(string token)
         {
-            var user = _context.Users.SingleOrDefault(u => u.RefreshTokens.Any(t => t.Token == token));
-
+            var user = _context.Users.Include(u => u.RefreshTokens).SingleOrDefault(u => u.RefreshTokens.Any(t => t.Token == token));
             if (user == null)
                 throw new AppException("Invalid token");
 
