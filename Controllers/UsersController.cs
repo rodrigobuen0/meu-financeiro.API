@@ -18,7 +18,7 @@ namespace meu_financeiro.API.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("authenticate")]
+        [Route("/auth")]
         public IActionResult Authenticate(AuthenticateRequest model)
         {
             var response = _userService.Authenticate(model, ipAddress());
