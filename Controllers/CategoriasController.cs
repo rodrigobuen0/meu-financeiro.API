@@ -40,8 +40,15 @@ namespace meu_financeiro.API.Controllers
         [HttpGet("{id}")]
         public IActionResult GetById(Guid id)
         {
-            var categoria = _categoriasService.GetById(id, Guid.Parse(Request.Headers["UserId"]));
-            return Ok(categoria);
+            var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            var userId = _jwtUtils.ValidateJwtToken(token);
+            if (userId == null)
+                return BadRequest("Usuario não encontrado!");
+            else
+            {
+                var categoria = _categoriasService.GetById(id, (Guid)userId);
+                return Ok(categoria);
+            }
         }
 
 

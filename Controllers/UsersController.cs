@@ -18,7 +18,7 @@ namespace meu_financeiro.API.Controllers
         }
 
         [AllowAnonymous]
-        [Route("/auth")]
+        [HttpPost("/auth")]
         public IActionResult Authenticate(AuthenticateRequest model)
         {
             var response = _userService.Authenticate(model, ipAddress());
@@ -27,16 +27,16 @@ namespace meu_financeiro.API.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("refresh-token")]
-        public IActionResult RefreshToken()
+        [HttpPost("/refresh-token")]
+        public IActionResult RefreshToken(string token)
         {
-            var refreshToken = Request.Cookies["refreshToken"];
+            var refreshToken = token ?? Request.Cookies["refreshToken"];
             var response = _userService.RefreshToken(refreshToken, ipAddress());
             setTokenCookie(response.RefreshToken);
             return Ok(response);
         }
 
-        [HttpPost("revoke-token")]
+        [HttpPost("/revoke-token")]
         public IActionResult RevokeToken(RevokeTokenRequest model)
         {
             // accept refresh token in request body or cookie
@@ -78,7 +78,7 @@ namespace meu_financeiro.API.Controllers
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
-                Expires = DateTime.UtcNow.AddMinutes(15)
+                Expires = DateTime.UtcNow.AddDays(7)
             };
             Response.Cookies.Append("refreshToken", token, cookieOptions);
         }
