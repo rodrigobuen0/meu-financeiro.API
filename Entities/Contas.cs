@@ -15,7 +15,7 @@ namespace meu_financeiro.API.Entities
         public decimal SaldoAtual { get; set; }
         public Guid UserId { get; set; }
         [JsonIgnore]
-        public User User { get; set; }
+        public User? User { get; set; }
 
     }
 }

@@ -49,16 +49,30 @@ namespace meu_financeiro.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Contas conta)
         {
-            var response = await _contasService.Post(conta, Guid.Parse(Request.Headers["UserId"]));
-            return Ok(response);
+            var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            var userId = _jwtUtils.ValidateJwtToken(token);
+            if (userId == null)
+                return BadRequest("Usuario não encontrado!");
+            else
+            {
+                var response = await _contasService.Post(conta, (Guid)userId);
+                return Ok(response);
+            }
         }
 
         // PUT api/<ContasController>/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(Guid id, [FromBody] Contas conta)
         {
-            var response = await _contasService.Put(id, conta, Guid.Parse(Request.Headers["UserId"]));
-            return Ok(response);
+            var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            var userId = _jwtUtils.ValidateJwtToken(token);
+            if (userId == null)
+                return BadRequest("Usuario não encontrado!");
+            else
+            {
+                var response = await _contasService.Put(id, conta, (Guid)userId);
+                return Ok(response);
+            }
 
         }
 
