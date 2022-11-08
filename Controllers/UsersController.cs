@@ -28,9 +28,9 @@ namespace meu_financeiro.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("/refresh-token")]
-        public IActionResult RefreshToken(string token)
+        public IActionResult RefreshToken([FromBody] RevokeTokenRequest model)
         {
-            var refreshToken = token ?? Request.Cookies["refreshToken"];
+            var refreshToken = model.Token ?? Request.Cookies["refreshToken"];
             var response = _userService.RefreshToken(refreshToken, ipAddress());
             setTokenCookie(response.RefreshToken);
             return Ok(response);
