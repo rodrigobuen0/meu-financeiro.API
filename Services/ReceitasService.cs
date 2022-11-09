@@ -12,6 +12,7 @@ namespace meu_financeiro.API.Services
     public interface IReceitasService
     {
         IEnumerable<Receitas> GetAll(Guid userId);
+        decimal GetAllMes(Guid userId);
         Receitas GetById(Guid id, Guid userId);
         Task<Receitas> Post(Receitas receita);
         Task<Receitas> Put(Guid id, Receitas receitaPost, Guid userId);
@@ -39,6 +40,13 @@ namespace meu_financeiro.API.Services
         public IEnumerable<Receitas> GetAll(Guid userId)
         {
             return _context.Receitas.Include(c => c.Conta).Include(c => c.Categoria).Where(r => r.UserId == userId).ToList();
+        }
+        public decimal GetAllMes(Guid userId)
+        {
+            DateOnly date = DateOnly.FromDateTime(DateTime.Now);
+            var firstDayOfMonth = new DateOnly(date.Year, date.Month, 1);
+            var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+            return _context.Receitas.Where(r => r.UserId == userId && r.DataTransacao >= firstDayOfMonth && r.DataTransacao <= lastDayOfMonth).Sum(r => r.Valor);
         }
 
         public Receitas GetById(Guid id, Guid userId)

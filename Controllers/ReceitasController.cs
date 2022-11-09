@@ -36,6 +36,21 @@ namespace meu_financeiro.API.Controllers
             }
         }
 
+        // GET: api/<ReceitasController>
+        [HttpGet("ValorReceitasMes")]
+        public IActionResult GetAllMes()
+        {
+            var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            var userId = _jwtUtils.ValidateJwtToken(token);
+            if (userId == null)
+                return BadRequest("Usuario não encontrado!");
+            else
+            {
+                var receitas = _receitasService.GetAllMes((Guid)userId);
+                return Ok(receitas);
+            }
+        }
+
         // GET api/<ReceitasController>/5
         [HttpGet("{id}")]
         public IActionResult GetById(Guid id)
