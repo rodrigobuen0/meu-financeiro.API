@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
+using meu_financeiro.API.Helpers;
 
 namespace meu_financeiro.API.Entities
 {
@@ -23,6 +24,7 @@ namespace meu_financeiro.API.Entities
         [Required]
         [JsonIgnore]
         public string HashSenha { get; set; }
+        [JsonConverter(typeof(Utils.DateOnlyJsonConverter))]
         public DateOnly? DataNascimento { get; set; }
         [MaxLength(13)]
         public string? Telefone { get; set; }

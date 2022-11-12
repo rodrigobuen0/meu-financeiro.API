@@ -36,8 +36,7 @@ namespace meu_financeiro.API.Controllers
             }
         }
 
-        // GET: api/<ReceitasController>
-        [HttpGet("ValorReceitasMes")]
+        [HttpGet("ReceitasMes")]
         public IActionResult GetAllMes()
         {
             var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();

@@ -12,8 +12,9 @@ namespace meu_financeiro.API.Services
     public interface IDespesasService
     {
         IEnumerable<Despesas> GetAll(Guid userId);
+        IEnumerable<Despesas> GetAllMes(Guid userId);
         Despesas GetById(Guid id, Guid userId);
-        Task<Despesas> Post(Despesas despesa, Guid userId);
+        Task<Despesas> Post(Despesas despesa);
         Task<Despesas> Put(Guid id, Despesas despesaPost, Guid userId);
         Task<bool> Delete(Guid id, Guid userId);
 
@@ -41,12 +42,20 @@ namespace meu_financeiro.API.Services
             return _context.Despesas.Include(c => c.Conta).Include(c => c.Categoria).Where(r => r.UserId == userId).ToList();
         }
 
+        public IEnumerable<Despesas> GetAllMes(Guid userId)
+        {
+            DateOnly date = DateOnly.FromDateTime(DateTime.Now);
+            var firstDayOfMonth = new DateOnly(date.Year, date.Month, 1);
+            var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+            return _context.Despesas.Where(r => r.UserId == userId && r.DataTransacao >= firstDayOfMonth && r.DataTransacao <= lastDayOfMonth).OrderByDescending(r => r.DataTransacao).ToList();
+        }
+
         public Despesas GetById(Guid id, Guid userId)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Despesas> Post(Despesas despesa, Guid userId)
+        public async Task<Despesas> Post(Despesas despesa)
         {
             try
             {

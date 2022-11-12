@@ -13,10 +13,13 @@ namespace meu_financeiro.API.Controllers
     public class DespesasController : ControllerBase
     {
         private IDespesasService _despesasService;
+        private IJwtUtils _jwtUtils;
 
-        public DespesasController(IDespesasService despesasService)
+        public DespesasController(IDespesasService despesasService, IJwtUtils jwtUtils)
         {
             _despesasService = despesasService;
+            _jwtUtils = jwtUtils;
+
         }
 
         // GET: api/<DespesasController>
@@ -25,6 +28,21 @@ namespace meu_financeiro.API.Controllers
         {
             var despesas = _despesasService.GetAll(Guid.Parse(Request.Headers["UserId"]));
             return Ok(despesas);
+        }
+
+        // GET: api/<ReceitasController>
+        [HttpGet("DespesasMes")]
+        public IActionResult GetAllValorMes()
+        {
+            var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            var userId = _jwtUtils.ValidateJwtToken(token);
+            if (userId == null)
+                return BadRequest("Usuario não encontrado!");
+            else
+            {
+                var receitas = _despesasService.GetAllMes((Guid)userId);
+                return Ok(receitas);
+            }
         }
 
         // GET api/<DespesasController>/5
@@ -40,8 +58,19 @@ namespace meu_financeiro.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Despesas despesa)
         {
-            var response = await _despesasService.Post(despesa, Guid.Parse(Request.Headers["UserId"]));
-            return Ok(response);
+            var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            var userId = _jwtUtils.ValidateJwtToken(token);
+            if (userId == null)
+                return BadRequest("Usuario não encontrado!");
+            else
+            {
+                despesa.UserId = (Guid)userId;
+                var response = await _despesasService.Post(despesa);
+                return Ok(response);
+            }
+
+            //var response = await _despesasService.Post(despesa, Guid.Parse(Request.Headers["UserId"]));
+            //return Ok(response);
         }
 
         // PUT api/<DespesasController>/5

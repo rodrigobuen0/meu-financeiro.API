@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using meu_financeiro.API.Helpers;
+using System.Text.Json.Serialization;
 
 namespace meu_financeiro.API.Entities
 {
@@ -11,6 +13,7 @@ namespace meu_financeiro.API.Entities
         [MaxLength(50)]
         public string? Descricao { get; set; }
         public decimal Valor { get; set; }
+        [JsonConverter(typeof(Utils.DateOnlyJsonConverter))]
         public DateOnly DataTransacao { get; set; }
         public Guid CategoriaId { get; set; }
         public Categorias? Categoria { get; set; }
