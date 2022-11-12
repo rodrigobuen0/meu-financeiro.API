@@ -19,7 +19,9 @@ namespace meu_financeiro.API.Helpers
             options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         }
 
-        public DbSet<Categorias> Categorias { get; set; }
+        public DbSet<CategoriasReceitas> CategoriasReceitas { get; set; }
+        public DbSet<CategoriasDespesas> CategoriasDespesas { get; set; }
+
         public DbSet<Contas> Contas { get; set; }
         public DbSet<Despesas> Despesas { get; set; }
         public DbSet<Receitas> Receitas { get; set; }

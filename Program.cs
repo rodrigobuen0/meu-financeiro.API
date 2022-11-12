@@ -24,7 +24,8 @@ var builder = WebApplication.CreateBuilder(args);
     services.AddScoped<IUserService, UserService>();
     services.AddScoped<IReceitasService, ReceitasService>();
     services.AddScoped<IDespesasService, DespesasService>();
-    services.AddScoped<ICategoriasService, CategoriasService>();
+    services.AddScoped<ICategoriasReceitasService, CategoriasReceitasService>();
+    services.AddScoped<ICategoriasDespesasService, CategoriasDespesasService>();
     services.AddScoped<IContasService, ContasService>();
 }
 

@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace meu_financeiro.API.Entities
 {
-    public class Categorias
+    public class CategoriasReceitas
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

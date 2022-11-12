@@ -44,7 +44,9 @@ namespace meu_financeiro.API.Entities
         [JsonIgnore]
         public List<Contas> Contas{ get; set; }
         [JsonIgnore]
-        public List<Categorias> Categorias { get; set; }
+        public List<CategoriasReceitas> CategoriasReceitas { get; set; }
+        [JsonIgnore]
+        public List<CategoriasDespesas> CategoriasDespesas { get; set; }
         [JsonIgnore]
         public List<Despesas> Despesas { get; set; }
         [JsonIgnore]

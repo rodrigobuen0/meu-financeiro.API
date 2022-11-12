@@ -10,14 +10,14 @@ namespace meu_financeiro.API.Controllers
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    public class CategoriasController : ControllerBase
+    public class CategoriasReceitasController : ControllerBase
     {
-        private ICategoriasService _categoriasService;
+        private ICategoriasReceitasService _categoriasReceitasService;
         private IJwtUtils _jwtUtils;
 
-        public CategoriasController(ICategoriasService categoriasService, IJwtUtils jwtUtils)
+        public CategoriasReceitasController(ICategoriasReceitasService categoriasService, IJwtUtils jwtUtils)
         {
-            _categoriasService = categoriasService;
+            _categoriasReceitasService = categoriasService;
             _jwtUtils = jwtUtils;
         }
 
@@ -31,7 +31,7 @@ namespace meu_financeiro.API.Controllers
                 return BadRequest("Usuario não encontrado!");
             else
             {
-                var categorias = _categoriasService.GetAll((Guid)userId);
+                var categorias = _categoriasReceitasService.GetAll((Guid)userId);
                 return Ok(categorias);
             }
         }
@@ -46,7 +46,7 @@ namespace meu_financeiro.API.Controllers
                 return BadRequest("Usuario não encontrado!");
             else
             {
-                var categoria = _categoriasService.GetById(id, (Guid)userId);
+                var categoria = _categoriasReceitasService.GetById(id, (Guid)userId);
                 return Ok(categoria);
             }
         }
@@ -54,17 +54,17 @@ namespace meu_financeiro.API.Controllers
 
         // POST api/<CategoriasController>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Categorias categoria)
+        public async Task<IActionResult> Post([FromBody] CategoriasReceitas categoria)
         {
-            var response = await _categoriasService.Post(categoria, Guid.Parse(Request.Headers["UserId"]));
+            var response = await _categoriasReceitasService.Post(categoria, Guid.Parse(Request.Headers["UserId"]));
             return Ok(response);
         }
 
         // PUT api/<CategoriasController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(Guid id, [FromBody] Categorias categoria)
+        public async Task<IActionResult> Put(Guid id, [FromBody] CategoriasReceitas categoria)
         {
-            var response = await _categoriasService.Put(id, categoria, Guid.Parse(Request.Headers["UserId"]));
+            var response = await _categoriasReceitasService.Put(id, categoria, Guid.Parse(Request.Headers["UserId"]));
             return Ok(response);
 
         }
@@ -73,7 +73,7 @@ namespace meu_financeiro.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var response = await _categoriasService.Delete(id, Guid.Parse(Request.Headers["UserId"]));
+            var response = await _categoriasReceitasService.Delete(id, Guid.Parse(Request.Headers["UserId"]));
             return Ok(response);
         }
     }

@@ -9,23 +9,23 @@ using System.Security.Claims;
 
 namespace meu_financeiro.API.Services
 {
-    public interface ICategoriasService
+    public interface ICategoriasDespesasService
     {
-        IEnumerable<Categorias> GetAll(Guid userId);
-        Categorias GetById(Guid id, Guid userId);
-        Task<Categorias> Post(Categorias categoria, Guid userId);
-        Task<Categorias> Put(Guid id, Categorias categoriaPost, Guid userId);
+        IEnumerable<CategoriasDespesas> GetAll(Guid userId);
+        CategoriasDespesas GetById(Guid id, Guid userId);
+        Task<CategoriasDespesas> Post(CategoriasDespesas categoria, Guid userId);
+        Task<CategoriasDespesas> Put(Guid id, CategoriasDespesas categoriaPost, Guid userId);
         Task<bool> Delete(Guid id, Guid userId);
 
     }
 
-    public class CategoriasService : ICategoriasService
+    public class CategoriasDespesasService : ICategoriasDespesasService
     {
         private DataContext _context;
         private IJwtUtils _jwtUtils;
         private readonly AppSettings _appSettings;
 
-        public CategoriasService(
+        public CategoriasDespesasService(
             DataContext context,
             IJwtUtils jwtUtils,
             IOptions<AppSettings> appSettings)
@@ -36,21 +36,21 @@ namespace meu_financeiro.API.Services
             _appSettings = appSettings.Value;
         }
 
-        public IEnumerable<Categorias> GetAll(Guid userId)
+        public IEnumerable<CategoriasDespesas> GetAll(Guid userId)
         {
-            return _context.Categorias.Where(r => r.UserId == userId).ToList();
+            return _context.CategoriasDespesas.Where(r => r.UserId == userId).ToList();
         }
 
-        public Categorias GetById(Guid id, Guid userId)
+        public CategoriasDespesas GetById(Guid id, Guid userId)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Categorias> Post(Categorias categoria, Guid userId)
+        public async Task<CategoriasDespesas> Post(CategoriasDespesas categoria, Guid userId)
         {
             try
             {
-                _context.Categorias.Add(categoria);
+                _context.CategoriasDespesas.Add(categoria);
 
                 if (await _context.SaveChangesAsync() > 0)
                 {
@@ -64,11 +64,11 @@ namespace meu_financeiro.API.Services
             }
         }
 
-        public async Task<Categorias> Put(Guid id, Categorias categoriaPost, Guid userId)
+        public async Task<CategoriasDespesas> Put(Guid id, CategoriasDespesas categoriaPost, Guid userId)
         {
             try
             {
-                var categorias = await _context.Categorias.FindAsync(id);
+                var categorias = await _context.CategoriasDespesas.FindAsync(id);
                 if (categorias == null) return null;
 
                 categoriaPost.Id = categorias.Id;
@@ -76,7 +76,7 @@ namespace meu_financeiro.API.Services
                 _context.Update(categoriaPost);
                 if (await _context.SaveChangesAsync() > 0)
                 {
-                    return await _context.Categorias.FindAsync(id);
+                    return await _context.CategoriasDespesas.FindAsync(id);
                 }
                 return null;
             }
@@ -90,7 +90,7 @@ namespace meu_financeiro.API.Services
         {
             try
             {
-                var categoria = await _context.Categorias.FindAsync(id);
+                var categoria = await _context.CategoriasDespesas.FindAsync(id);
                 if (categoria == null) throw new Exception("Conta Não Encontrada");
 
                 _context.Remove(categoria);
