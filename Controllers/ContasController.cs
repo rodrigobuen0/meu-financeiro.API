@@ -55,7 +55,8 @@ namespace meu_financeiro.API.Controllers
                 return BadRequest("Usuario não encontrado!");
             else
             {
-                var response = await _contasService.Post(conta, (Guid)userId);
+                conta.UserId = (Guid)userId;
+                var response = await _contasService.Post(conta);
                 return Ok(response);
             }
         }
