@@ -13,7 +13,7 @@ namespace meu_financeiro.API.Entities
         public string Descricao { get; set; }
         public Guid UserId { get; set; }
         [JsonIgnore]
-        public User User { get; set; }
+        public User? User { get; set; }
 
     }
 }

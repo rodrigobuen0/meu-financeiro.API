@@ -56,8 +56,16 @@ namespace meu_financeiro.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CategoriasReceitas categoria)
         {
-            var response = await _categoriasReceitasService.Post(categoria, Guid.Parse(Request.Headers["UserId"]));
-            return Ok(response);
+            var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            var userId = _jwtUtils.ValidateJwtToken(token);
+            if (userId == null)
+                return BadRequest("Usuario não encontrado!");
+            else
+            {
+                categoria.UserId = (Guid)userId;
+                var response = await _categoriasReceitasService.Post(categoria);
+                return Ok(response);
+            }
         }
 
         // PUT api/<CategoriasController>/5

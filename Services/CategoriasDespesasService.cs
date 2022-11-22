@@ -13,7 +13,7 @@ namespace meu_financeiro.API.Services
     {
         IEnumerable<CategoriasDespesas> GetAll(Guid userId);
         CategoriasDespesas GetById(Guid id, Guid userId);
-        Task<CategoriasDespesas> Post(CategoriasDespesas categoria, Guid userId);
+        Task<CategoriasDespesas> Post(CategoriasDespesas categoria);
         Task<CategoriasDespesas> Put(Guid id, CategoriasDespesas categoriaPost, Guid userId);
         Task<bool> Delete(Guid id, Guid userId);
 
@@ -46,7 +46,7 @@ namespace meu_financeiro.API.Services
             throw new NotImplementedException();
         }
 
-        public async Task<CategoriasDespesas> Post(CategoriasDespesas categoria, Guid userId)
+        public async Task<CategoriasDespesas> Post(CategoriasDespesas categoria)
         {
             try
             {

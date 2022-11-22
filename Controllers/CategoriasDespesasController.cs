@@ -56,8 +56,16 @@ namespace meu_financeiro.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CategoriasDespesas categoria)
         {
-            var response = await _categoriasDespesasService.Post(categoria, Guid.Parse(Request.Headers["UserId"]));
-            return Ok(response);
+            var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            var userId = _jwtUtils.ValidateJwtToken(token);
+            if (userId == null)
+                return BadRequest("Usuario não encontrado!");
+            else
+            {
+                categoria.UserId = (Guid)userId;
+                var response = await _categoriasDespesasService.Post(categoria);
+                return Ok(response);
+            }
         }
 
         // PUT api/<CategoriasController>/5
@@ -66,7 +74,6 @@ namespace meu_financeiro.API.Controllers
         {
             var response = await _categoriasDespesasService.Put(id, categoria, Guid.Parse(Request.Headers["UserId"]));
             return Ok(response);
-
         }
 
         // DELETE api/<CategoriasController>/5
