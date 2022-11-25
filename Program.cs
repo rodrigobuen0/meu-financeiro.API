@@ -27,6 +27,7 @@ var builder = WebApplication.CreateBuilder(args);
     services.AddScoped<ICategoriasReceitasService, CategoriasReceitasService>();
     services.AddScoped<ICategoriasDespesasService, CategoriasDespesasService>();
     services.AddScoped<IContasService, ContasService>();
+    services.AddScoped<ITransferenciasService, TransferenciasService>();
 }
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

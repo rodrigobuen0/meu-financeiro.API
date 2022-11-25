@@ -21,10 +21,10 @@ namespace meu_financeiro.API.Helpers
 
         public DbSet<CategoriasReceitas> CategoriasReceitas { get; set; }
         public DbSet<CategoriasDespesas> CategoriasDespesas { get; set; }
-
         public DbSet<Contas> Contas { get; set; }
         public DbSet<Despesas> Despesas { get; set; }
         public DbSet<Receitas> Receitas { get; set; }
+        public DbSet<Transferencias> Transferencias { get; set; }
         public DbSet<User> Users { get; set; }
 
     }
