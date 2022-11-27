@@ -1,4 +1,5 @@
 ﻿using meu_financeiro.API.Authorization;
+using meu_financeiro.API.Entities;
 using meu_financeiro.API.Models.Users;
 using meu_financeiro.API.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +34,14 @@ namespace meu_financeiro.API.Controllers
             var refreshToken = model.Token ?? Request.Cookies["refreshToken"];
             var response = _userService.RefreshToken(refreshToken, ipAddress());
             setTokenCookie(response.RefreshToken);
+            return Ok(response);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] UserCreate user)
+        {
+            var response = await _userService.Post(user);
             return Ok(response);
         }
 

@@ -40,17 +40,31 @@ namespace meu_financeiro.API.Entities
         
 
         [JsonIgnore]
-        public List<RefreshToken> RefreshTokens { get; set; }
+        public List<RefreshToken>? RefreshTokens { get; set; }
         [JsonIgnore]
-        public List<Contas> Contas{ get; set; }
+        public List<Contas>? Contas{ get; set; }
         [JsonIgnore]
-        public List<CategoriasReceitas> CategoriasReceitas { get; set; }
+        public List<CategoriasReceitas>? CategoriasReceitas { get; set; }
         [JsonIgnore]
-        public List<CategoriasDespesas> CategoriasDespesas { get; set; }
+        public List<CategoriasDespesas>? CategoriasDespesas { get; set; }
         [JsonIgnore]
-        public List<Despesas> Despesas { get; set; }
+        public List<Despesas>? Despesas { get; set; }
         [JsonIgnore]
-        public List<Receitas> Receitas { get; set; }
+        public List<Receitas>? Receitas { get; set; }
 
+    }
+
+    public class UserCreate
+    {
+        public Guid Id { get; set; }
+        public string PrimeiroNome { get; set; }
+        public string UltimoNome { get; set; }
+        public string Email { get; set; }
+        public string HashSenha { get; set; }
+        [JsonConverter(typeof(Utils.DateOnlyJsonConverter))]
+        public DateOnly? DataNascimento { get; set; }
+        public string? Telefone { get; set; }
+        public string? Cpf { get; set; }
+        public Sexo? Sexo { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using meu_financeiro.API.Authorization;
 using meu_financeiro.API.Entities;
 using meu_financeiro.API.Helpers;
+using meu_financeiro.API.Migrations;
 using meu_financeiro.API.Models.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -14,6 +15,7 @@ namespace meu_financeiro.API.Services
         void RevokeToken(string token, string ipAddress);
         IEnumerable<User> GetAll();
         User GetById(Guid id);
+        Task<User> Post(UserCreate user);
     }
 
     public class UserService : IUserService
@@ -116,6 +118,35 @@ namespace meu_financeiro.API.Services
             var user = _context.Users.Find(id);
             if (user == null) throw new KeyNotFoundException("User not found");
             return user;
+        }
+
+        public async Task<User> Post(UserCreate userCreate)
+        {
+            try
+            {
+                var user = new User()
+                {
+                    PrimeiroNome = userCreate.PrimeiroNome,
+                    UltimoNome = userCreate.UltimoNome,
+                    Email = userCreate.Email,
+                    HashSenha = BCrypt.Net.BCrypt.HashPassword(userCreate.HashSenha),
+                    DataNascimento = userCreate.DataNascimento,
+                    Telefone = userCreate.Telefone,
+                    Cpf = userCreate.Cpf,
+                    Sexo = userCreate.Sexo,
+                };
+                _context.Users.Add(user);
+
+                if (await _context.SaveChangesAsync() > 0)
+                {
+                    return user;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         // helper methods
