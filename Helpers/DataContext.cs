@@ -25,6 +25,7 @@ namespace meu_financeiro.API.Helpers
         public DbSet<Despesas> Despesas { get; set; }
         public DbSet<Receitas> Receitas { get; set; }
         public DbSet<Transferencias> Transferencias { get; set; }
+        public DbSet<ReajustesSaldoContas> ReajustesSaldoContas { get; set; }
         public DbSet<User> Users { get; set; }
 
     }
