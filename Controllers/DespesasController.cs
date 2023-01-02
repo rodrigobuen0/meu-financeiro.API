@@ -77,8 +77,15 @@ namespace meu_financeiro.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(Guid id, [FromBody] Despesas despesa)
         {
-            var response = await _despesasService.Put(id, despesa, Guid.Parse(Request.Headers["UserId"]));
-            return Ok(response);
+            var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            var userId = _jwtUtils.ValidateJwtToken(token);
+            if (userId == null)
+                return BadRequest("Usuario não encontrado!");
+            else
+            {
+                var response = await _despesasService.Put(id, despesa, (Guid)userId);
+                return Ok(response);
+            }
 
         }
 
@@ -86,8 +93,15 @@ namespace meu_financeiro.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var response = await _despesasService.Delete(id, Guid.Parse(Request.Headers["UserId"]));
-            return Ok(response);
+            var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            var userId = _jwtUtils.ValidateJwtToken(token);
+            if (userId == null)
+                return BadRequest("Usuario não encontrado!");
+            else
+            {
+                var despesa = await _despesasService.Delete(id, (Guid)userId);
+                return Ok(despesa);
+            }
         }
     }
 }

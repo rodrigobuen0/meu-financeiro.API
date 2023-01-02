@@ -79,17 +79,30 @@ namespace meu_financeiro.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(Guid id, [FromBody] Receitas receita)
         {
-            var response = await _receitasService.Put(id, receita, Guid.Parse(Request.Headers["UserId"]));
-            return Ok(response);
-
+            var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            var userId = _jwtUtils.ValidateJwtToken(token);
+            if (userId == null)
+                return BadRequest("Usuario não encontrado!");
+            else
+            {
+                var response = await _receitasService.Put(id, receita, (Guid)userId);
+                return Ok(response);
+            }
         }
 
         // DELETE api/<ReceitasController>/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var response = await _receitasService.Delete(id, Guid.Parse(Request.Headers["UserId"]));
-            return Ok(response);
+            var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            var userId = _jwtUtils.ValidateJwtToken(token);
+            if (userId == null)
+                return BadRequest("Usuario não encontrado!");
+            else
+            {
+                var receita = await _receitasService.Delete(id, (Guid)userId);
+                return Ok(receita);
+            }
         }
     }
 }
